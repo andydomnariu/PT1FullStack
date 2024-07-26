@@ -18,7 +18,7 @@ apiClient.interceptors.response.use(
     else if (error.request) {
       console.error('Request error:', error.request);
     } 
-    else {
+    else { 
       console.error('Error:', error.message);
     }
     return Promise.reject(error);
