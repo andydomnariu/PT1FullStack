@@ -1,5 +1,5 @@
 # PT1FullStack
-## Requirements:
+### Requirements:
 ## NodeJs installed (https://nodejs.org/en/learn/getting-started/how-to-install-nodejs)
 ## NestJs installed ($ npm install -g @nestjs/cli)
 ## vue3 installed ($ npm install vue@next)
