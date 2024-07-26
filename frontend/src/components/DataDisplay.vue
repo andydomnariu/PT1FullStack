@@ -1,28 +1,28 @@
 <template>
-  <div class="weather-container">
-    <h2>Tiempo en {{ weather.name }}</h2>
+  <div>
     <div v-if="weather">
+      <h2>Weather in {{ weather.name }}</h2>
       <table class="weather-table">
         <tr>
-          <th>Temperatura</th>
+          <th>Temperature</th>
           <td>{{ weather.main.temp }} °C</td>
         </tr>
         <tr>
-          <th>Humedad</th>
+          <th>Humidity</th>
           <td>{{ weather.main.humidity }} %</td>
         </tr>
         <tr>
-          <th>Presión</th>
+          <th>Pressure</th>
           <td>{{ weather.main.pressure }} hPa</td>
         </tr>
         <tr>
-          <th>Descripción</th>
+          <th>Description</th>
           <td>{{ weather.weather[0].description }}</td>
         </tr>
       </table>
     </div>
     <div v-else>
-      <p>Cargando datos...</p>
+      <p>Loading data...</p>
     </div>
   </div>
 </template>
@@ -34,16 +34,21 @@ export default {
   data() {
     return {
       weather: null,
-      socket: null
+      socket: null,
     };
   },
   mounted() {
-    this.socket = io('http://192.168.1.136:3000');
-    this.socket.on('weatherUpdate', (data) => {
-      this.weather = data;
-    });
+    this.setupSocket();
   },
-  beforeDestroy() {
+  methods: {
+    setupSocket() {
+      this.socket = io('http://localhost:3000');
+      this.socket.on('weatherUpdate', (data) => {
+        this.weather = data;
+      });
+    }
+  },
+  beforeUnmount() {
     if (this.socket) {
       this.socket.disconnect();
     }
@@ -52,15 +57,6 @@ export default {
 </script>
 
 <style scoped>
-.weather-container {
-  border: 1px solid #ddd;
-  padding: 16px;
-  border-radius: 8px;
-  max-width: 400px;
-  margin: 20px auto;
-  text-align: center;
-}
-
 .weather-table {
   width: 100%;
   margin-top: 10px;

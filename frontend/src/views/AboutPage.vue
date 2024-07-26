@@ -1,6 +1,6 @@
 <template>
     <div class="about-page">
-      <h1>About Page</h1>
+      <h1>Weather data page</h1>
       <button @click="requestData">Fetch Data</button>
       <table v-if="data.length" class="data-table">
         <thead>
@@ -33,7 +33,7 @@
       };
     },
     mounted() {
-      this.socket = io('http://localhost:3000'); // URL del servidor backend
+      this.socket = io('http://localhost:3000');
       this.socket.on('dataUpdate', (data) => {
         this.data = data;
       });

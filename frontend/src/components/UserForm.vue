@@ -1,58 +1,46 @@
 <template>
-    <div>
-      <h2>{{ isEditing ? 'Edit User' : 'Create User' }}</h2>
-      <form @submit.prevent="handleSubmit">
-        <div v-if="isEditing">
-          <label for="id">ID:</label>
-          <input type="text" v-model="user.id" readonly />
-        </div>
-        <div>
-          <label for="realName">Real Name:</label>
-          <input type="text" v-model="user.realName" required />
-        </div>
-        <div>
-          <label for="alias">User Alias:</label>
-          <input type="text" v-model="user.alias" required />
-        </div>
-        <div>
-          <label for="password">Password:</label>
-          <input type="password" v-model="user.password" required />
-        </div>
-        <div>
-          <label for="email">Email:</label>
-          <input type="email" v-model="user.email" required />
-        </div>
-        <button type="submit">{{ isEditing ? 'Update' : 'Create' }}</button>
-      </form>
-    </div>
-  </template>
-  
-  <script>
-  export default {
-    props: {
-      userToEdit: Object,
-    },
-    data() {
-      return {
-        user: this.userToEdit || {
-          id: null,
-          realName: '',
-          alias: '',
-          password: '',
-          email: '',
-        },
-        isEditing: !!this.userToEdit,
-      };
-    },
-    methods: {
-      handleSubmit() {
-        this.$emit('submit', this.user);
-      },
-    },
-  };
-  </script>
-  
-  <style scoped>
+  <div class="signup-form">
+    <h2>Sign Up</h2>
+    <form @submit.prevent="submitForm">
+      <div>
+        <label for="new-username">Username:</label>
+        <input v-model="username" type="text" id="new-username" required />
+      </div>
+      <div>
+        <label for="new-password">Password:</label>
+        <input v-model="password" type="password" id="new-password" required />
+      </div>
+      <div>
+        <label for="email">Email:</label>
+        <input v-model="email" type="email" id="email" required />
+      </div>
+      <button type="submit">Sign Up</button>
+      <button type="button" @click="$emit('close')">Cancel</button>
+    </form>
+  </div>
+</template>
 
-  </style>
-  
+<script>
+export default {
+  data() {
+    return {
+      username: '',
+      password: '',
+      email: ''
+    };
+  },
+  methods: {
+    submitForm() {
+      const userData = {
+        username: this.username,
+        password: this.password,
+        email: this.email
+      };
+      this.$emit('submit', userData);
+    }
+  }
+};
+</script>
+
+<style scoped>
+</style>

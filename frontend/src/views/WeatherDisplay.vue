@@ -1,11 +1,11 @@
 <template>
   <div class="weather-container">
-    <h2>Tiempo en {{ weather.name }}</h2>
+    <h2 v-if="weather">Tiempo en {{ weather.name }}</h2>
     <div v-if="weather">
       <table class="weather-table">
         <tr>
           <th>Temperatura</th>
-          <td>{{ weather.main.temp }} °C</td>
+          <td>{{ weather.main.temp - 273.15 }} °C</td>
         </tr>
         <tr>
           <th>Humedad</th>

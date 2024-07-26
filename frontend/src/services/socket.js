@@ -1,12 +1,28 @@
 import io from 'socket.io-client';
 
 class SocketService {
-  socket;
+  constructor() {
+    this.socket = null;
+  }
 
   connect() {
-    this.socket = io('http://localhost:3000');
-    this.socket.on('connect', () => {
-      console.log('Connected to WebSocket server');
+    if (!this.socket) {
+      this.socket = io('http://localhost:3000');
+      this.socket.on('connect', () => {
+        console.log('Connected to WebSocket server');
+      });
+    }
+  }
+
+  signUp(user) {
+    this.socket.emit('signUp', user);
+  }
+
+  searchUser(username, callback) {
+    this.socket.emit('searchUser', username);
+    this.socket.on('searchUserResults', callback);
+    this.socket.on('searchUserError', (error) => {
+      console.error('Search user error:', error);
     });
   }
 
@@ -15,14 +31,10 @@ class SocketService {
     this.socket.on(event, callback);
   }
 
-  emit(event, data) {
-    if (!this.socket) return;
-    this.socket.emit(event, data);
-  }
-
   disconnect() {
     if (this.socket) {
       this.socket.disconnect();
+      this.socket = null;
     }
   }
 }

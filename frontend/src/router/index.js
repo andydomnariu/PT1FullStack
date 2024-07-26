@@ -1,17 +1,40 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HomePage from '@/views/HomePage.vue';
-import AboutPage from '@/views/AboutPage.vue';
-import ContactPage from '@/views/WeatherDisplay.vue';
+import WeatherDisplay from '../views/WeatherDisplay.vue';
+import UserLogin from '../components/UserLogin.vue';
+
+const isAuthenticated = () => localStorage.getItem('authenticated') === 'true';
 
 const routes = [
-  { path: '/', name: 'Home', component: HomePage },
-  { path: '/about', name: 'About', component: AboutPage },
-  { path: '/contact', name: 'Contact', component: ContactPage },
+  {
+    path: '/',
+    redirect: () => {
+      return isAuthenticated() ? '/weather-display' : '/login';
+    }
+  },
+  {
+    path: '/login',
+    component: UserLogin
+  },
+  {
+    path: '/weather-display',
+    component: WeatherDisplay,
+    beforeEnter: (to, from, next) => {
+      if (isAuthenticated()) {
+        next();
+      } else {
+        next('/login');
+      }
+    }
+  },
+  {
+    path: '/:catchAll(.*)',
+    redirect: '/'
+  }
 ];
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes,
+  history: createWebHistory(),
+  routes
 });
 
 export default router;
